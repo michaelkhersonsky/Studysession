@@ -24,7 +24,7 @@
 	$result = socket_read($sock, 1024) or die("Could not read server response\n");
 	echo "Reply From Server  :".$result;
 
-	//Close the socket
+     	//Close the socket  traaa taaa taaa
 	socket_close($sock);
 
 ?>
