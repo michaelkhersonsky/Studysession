@@ -1,0 +1,68 @@
+# ---
+# - name: Variables
+#   hosts: localhost
+#   become: yes
+#   gather_facts: no
+#   tasks:
+#     - include_vars:
+#         file: /home/ansible/MBKH/YML/var_bulkfiles.yml
+#     - name: Create a directory "{{ dirpath }}"
+#       file: 
+#         path: "{{ dirpath }}"
+#         state: "{{ dirtype }}"
+#         owner: "{{ userowner }}"
+#         group: "{{ userowner }}"
+#         mode: "{{ dirmode }}"
+#     - name: Bulk files creation
+#       file:
+#         path: "{{ dirpath }}/{{ item }}"
+#         state: "{{ filetype }}"
+#         owner: "{{ userowner }}"
+#         group: "{{ userowner }}"
+#         mode: "{{ filemode }}"
+#       loop: "{{ files }}"
+
+---
+- name: Variables
+  hosts: localhost
+  become: yes
+  tasks:
+    - include_vars:
+        file: /home/ansible/MBKH/YML/var_bulkfiles.yml
+    - name: Create a directory "{{ dirpath }}"
+      file: 
+        path: "{{ dirpath }}"
+        state: "{{ dirtype }}"
+        owner: "{{ userowner }}"
+        group: "{{ userowner }}"
+        mode: "{{ dirmode }}"
+    - name: Bulk files creation
+      file:
+        path: "{{ dirpath }}/{{ item.name }}" ## /home/falldevops/file2.txt
+        state: "{{ filetype }}"
+        owner: "{{ item.userowner }}"
+        group: "{{ item.groupowner }}"
+        mode: "{{ item.filemode }}"
+      loop: "{{ files }}"
+ 
+    # - name: Bulk files creation
+    #   file:
+    #     path: /home/falldevops/file2.txt
+    #     state: touch
+    #     owner: ansibleadmin
+    #     group: ansibleadmin
+    #     mode: '644'
+    # - name: Bulk files creation
+    #   file:
+    #     path: /home/falldevops/file3.txt
+    #     state: touch
+    #     owner: ansibleadmin
+    #     group: ansibleadmin
+    #     mode: '644'
+    # - name: Bulk files creation
+    #   file:
+    #     path: /home/falldevops/file4.txt
+    #     state: touch
+    #     owner: ansibleadmin
+    #     group: ansibleadmin
+    #     mode: '644'

@@ -1,0 +1,19 @@
+dirpath: '/home/falldevops'
+userowner: 'ansibleadmin'
+dirmode: '770'
+dirtype: 'directory'
+files:
+  - name: file2.txt
+    userowner: root
+    groupowner: ansibleadmin
+    filemode: '600'
+  - name: file3.txt
+    userowner: ansibleadmin
+    groupowner: ansibleadmin
+    filemode: '640'
+  - name: file4.txt
+    userowner: ansibleadmin
+    groupowner: root
+    filemode: '644'
+filetype: 'touch'
+# filemode: '644'
