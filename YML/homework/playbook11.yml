@@ -1,0 +1,10 @@
+--- 
+- name: Student again 
+  hosts: localhost
+  gather_facts: no
+  vars:
+    my_name: "Student"
+  tasks:
+    - name: Print Student is my name
+      debug:
+        msg: "'{{ my_name }} is my name"

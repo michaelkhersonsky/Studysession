@@ -1,0 +1,18 @@
+---
+- 
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create /tmp/testfile.txt
+      file:
+        path: /tmp/testfile.txt
+        state: touch
+
+- 
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create /tmp/testfile.txt
+      file:
+        path: /tmp/testfile.txt
+        state: touch

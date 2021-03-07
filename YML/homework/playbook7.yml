@@ -1,0 +1,10 @@
+---
+- 
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Update httpd to latest version
+      yum:
+        name: httpd
+        state: latest
+        # version: latest

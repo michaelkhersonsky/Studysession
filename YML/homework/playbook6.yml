@@ -1,0 +1,9 @@
+---
+- 
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Delete httpd package
+      yum:
+        name: httpd
+        state: absent

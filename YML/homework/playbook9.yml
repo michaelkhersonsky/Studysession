@@ -1,0 +1,9 @@
+---
+- 
+  hosts: localhost
+  gather_facts: no
+  vars:
+    my_name: Student
+  tasks:
+    - debug:
+        msg: "{{ my_name }}"         

@@ -1,0 +1,66 @@
+---
+- name: Deploy lamp stack application
+  hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Install common dependencies
+      yum:
+        name:
+          - libselinux-python
+          - libsemanage-python
+          - firewalld
+        state: installed
+    # Install and Configure Database
+- name: Deploy lamp stack application
+  hosts: serverb
+  become: yes
+  tasks:
+    - name: Install MariaDB package
+      yum:
+        name:
+          - mariadb-server
+          - MySQL-python
+        state: latest
+
+    - name: Start MariaDB Service
+      service: 
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Start firewalld
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+- name: Deploy lamp stack application
+  hosts: servera
+  gather_facts: no
+  check_mode: yes # Do not modify this line
+  become: yes
+  tasks:
+    - name: Install httpd and php
+      yum:
+        name:
+          - httpd
+          - php
+          - php-mysql
+        state: present
+
+    - name: Install web role specific dependencies
+      yum: 
+        name: git
+        state: latest
+    
+    - name: Start firewalld
+      service: 
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: http
+      service: 
+        name: httpd
+        state: started
+        enabled: yes

@@ -1,0 +1,10 @@
+---
+- 
+  hosts: localhost
+  gather_facts: no
+  vars:
+    my_name: Student
+  tasks:
+    - name: Print name using var option
+      debug:
+        msg: "{{ my_name }}"
