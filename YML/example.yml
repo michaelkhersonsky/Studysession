@@ -1,0 +1,231 @@
+# ---
+# - name: Create user and copy a key, does't work with hashing password
+#   hosts: servera
+#   become: true
+#   vars:
+#     newpassword: password
+#   tasks:
+#     - name: Create users
+#       user:
+#         name: testuser
+#         update_password: always
+#         password: "{{ newpassword|password_hash('sha512') }}"
+
+# ---
+# - name: creating users, groups, directories again
+#   hosts: bcservers
+#   become: true
+#   tasks:
+#     - user:
+#         name: test_user
+#     - file:
+#         path: /home/test_dir_alt
+#         state: directory
+#     - group:
+#         name: test_group
+#         gid: 5005
+
+# ---
+# - name: adding tcp to firewalld and activating 
+#   hosts: all
+#   become: true
+#   tasks:
+#     - name: Adding http to firewall 
+#       ansible.posix.firewalld:
+#         immediate: yes
+#         service: http
+#         permanent: yes
+#         state: enabled
+#     - name: Starting Apache 
+#       service:
+#         name: httpd
+#         state: started
+#         enabled: yes
+#     - name : Adding index.html
+#       copy:
+#         src: /home/ansible/index.html
+#         dest: /var/www/html/index.html
+#         owner: ansible  
+# ---
+# - name: Create user and copy a key
+#   hosts: servera
+#   become: true
+#   tasks:
+#     - name: Create a group
+#       ansible.builtin.group:
+#         name: falldevops
+#         gid: 2020
+#         state: present
+#     - name: Create a user
+#       user:
+#         groups: falldevops
+#         name: falldevopsuser
+#         update_password: always
+#         password: $6$MukEz7K2b1NaM9/5$.iFA/UxYK5IwyyEn6EU.47ZpHooSEJZ/WxvGfNpCQhxa8FJwwdmoBP.cmCVKM/vogCxEoc1v40o.DzVXMO0zP.
+
+# ---
+# - name: Sysinfo from ansible
+#   hosts: servera
+#   tasks:
+#     - name: Debug
+#       debug:
+#         var: ansible_facts
+
+# ---
+# - name: nstalling Apache (httpd)
+#   hosts: serverc
+#   become: yes
+#   tasks:
+#     - name: Httpd
+#       yum:
+#         state: latest
+# ---
+# - name: Create a local custom index.html file
+#   hosts: localhost
+#   become: yes
+#   tasks: 
+#     - name: Create file locally
+#       file:
+#         path: /home/ansible/customindex.html
+#         state: touch
+#     - name: Create content locally
+#       copy:
+#         content: "Hello from Copy Module of Ansible"
+#         dest: /home/ansible/customindex.html
+# --- 
+# - name: Send custom content to index.html of remote server
+#   hosts: servera
+#   become: yes
+#   tasks:
+#     - name: Send Content to remote file
+#       copy: 
+#         content: "This content was created by sending from Command Center"
+#         dest: /var/www/html/index.html
+
+# --- 
+# - name: Ensure the default Apache port is 8080
+#   hosts: all
+#   become: yes
+#   tasks:
+#     - ansible.builtin.lineinfile:
+#       path: /etc/httpd/conf/httpd.conf
+#       regexp: '^Listen '
+#       insertafter: '^#Listen '
+#       line: Listen 8080
+# ---
+# - name: Create multiple files on remote server with Loops
+#   hosts: servera
+#   become: yes
+#   tasks:
+#     - name: Create 5 files
+#       file:
+#         path: "{{ item }}"
+#         state: touch
+#         owner: ansible
+#         group: ansible
+#         mode: 700
+#       with_items: [ /home/ansible/file1, /home/ansible/file2, /home/ansible/file3 ]
+        
+# ---
+# - name: File manipulations on remote server
+#   hosts: serverb
+#   become: yes
+#   tasks:
+#     - name: Create 5 files
+#       file:
+#         path: /home/ansibleadmin/file1.txt
+#           # - /home/ansibleadmin/file2.txt
+#           # - /home/ansibleadmin/file3.txt
+#           # - /home/ansibleadmin/file4.txt
+#         state: touch
+#         owner: ansibleadmin
+#         group: ansibleadmin
+#         mode: 740
+#     - name: Create a directory /home/ansibleadmin/testdir
+#       file: 
+#         path: /home/ansibleadmin/testdir
+#         state: directory
+#         mode: 770
+#         group: wheel
+#     - name: Copy files into directory
+#       copy:
+#         remote_src: yes
+#         src: /home/ansibleadmin/file1.txt
+#           # - /home/ansibleadmin/file2.txt
+#           # - /home/ansibleadmin/file3.txt
+#           # - /home/ansibleadmin/file4.txt
+#         dest: /home/ansibleadmin/testdir
+# ---
+# - name: install packages
+#   hosts: serverb
+#   remote_user: ansible
+#   become: yes
+#   tasks:
+#   - name: Install multiple packages
+#     yum:
+#       state: latest
+#       name: [ 'httpd', 'mariadb' ]
+
+#   - name: Enable packages
+#     systemd:
+#       name: "{{ item }}"
+#       enabled: yes
+#       state: started
+#     with_items: [ 'httpd', 'mariadb', 'firewalld' ]
+#   - name: Ensure the default Apache port is 9000
+#     ansible.builtin.lineinfile:
+#       path: /etc/httpd/conf/httpd.conf
+#       regexp: '^Listen '
+#       insertafter: '^#Listen '
+#       line: Listen 9000
+#   - name: HTTP enabled
+#     ansible.posix.firewalld: 
+#       service: http
+#       state: enabled
+#       permanent: yes
+#       immediate: yes
+#   - name: Port 9000 enabling on Firewall
+#     ansible.posix.firewalld:
+#       port: 9000/tcp
+#       state: enabled
+#       permanent: yes
+#       immediate: yes
+
+---
+- name: MariaDB Playbook
+  hosts: serverb
+  gather_facts: true
+  become: true
+  vars:
+    mysql_root_password: "password"
+  tasks:
+    - name: install  python3-PyMySQL
+      yum:
+        name:
+           - python3-PyMySQL
+        state: latest
+    - name: start mariadb
+      service:
+        name: mariadb
+        enabled: true
+        state: started
+
+      ####################
+    - name: mysql_root_password Settings
+      mysql_user:
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+        user: root
+        check_implicit_admin: true
+        password: "{{ mysql_root_password }}"
+        host: localhost
+    # - name: remove remote root
+    #   mysql_user:
+    #     check_implicit_admin: true
+    #     login_user: root
+    #     login_password: "{{ mysql_root_password }}"
+    #     user: root
+    #     host: "{{ ansible_fqdn }}"
+    #     state: absent
+
+

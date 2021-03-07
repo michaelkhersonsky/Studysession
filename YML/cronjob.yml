@@ -1,0 +1,16 @@
+---
+- name: Setup a cronjob on servera
+  hosts: servera
+  become: yes
+  tasks:
+    - 
+    #Create a task for cronjob
+      ansible.builtin.cron:
+        name: date2html
+        user: root
+        job: "echo $(date)>>/var/www/html/index.html\n"
+        minute: "*/1"
+        hour: "*"
+        weekday: "*"
+        day: "*"
+        month: "*"

@@ -1,0 +1,15 @@
+---
+-
+  hosts: localhost
+  become: yes
+  tasks:
+    - include_vars:
+        #file: vars.yml
+        file: vars2
+    - name: Creating a directory again
+      file:
+        path: "{{ newdir }}"
+        state: "{{ type }}"
+        owner: "{{ userowner }}"
+        group: ansible
+        mode: "{{ mode }}"

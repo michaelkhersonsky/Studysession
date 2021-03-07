@@ -1,0 +1,15 @@
+[abservers]
+servera
+serverb
+
+[bcservers]
+serverb
+serverc
+
+[acservers]
+servera
+serverc
+
+[allservers:children]
+abservers
+bcservers

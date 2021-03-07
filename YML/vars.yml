@@ -1,0 +1,4 @@
+newdir: "/home/testdirnew"
+userowner: "ansible"
+mode: "700"
+type: "directory"
