@@ -1,9 +1,17 @@
 ---
 -
-  hosts: localhost
+  hosts: servera
+  become: yes
   gather_facts: no
   tasks:
-    - name: copy test.txt file
-      copy:
-        src: ./test.txt
-        dest: /tmp/test.txt
+    # - name: copy test.txt file
+    #   copy:
+    #     src: ./test.txt
+    #     dest: /tmp/test.txt
+      - name: create systemctl script
+        copy:
+          content: systemctl status httpd
+          dest: /home/ansible/systemctl_script.sh
+      - name: httpd status
+        shell:
+          cmd: "sudo bash systemctl_script.sh"
