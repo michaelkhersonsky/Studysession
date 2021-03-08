@@ -37,5 +37,5 @@
         immediate: yes
     - name: Copy custom index.html file
       copy:
-        src: ./customindex
+        src: /home/ansible/customindex.html
         dest: /var/www/html/index.html

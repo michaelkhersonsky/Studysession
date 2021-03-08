@@ -1,0 +1,35 @@
+---
+- name: File manipulations on remote server
+  hosts: serverb
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Create 5 files again
+      file:
+        path:  "{{ item }}"
+        state: touch
+        owner: ansible
+        group: ansible
+        mode: 0740
+      with_items:
+        - "/home/ansible/file1.txt"
+        - "/home/ansible/file2.txt"
+        - "/home/ansible/file3.txt"
+        - "/home/ansible/file4.txt"
+
+    - name: Create a directory /home/ansible/testdir
+      file: 
+        path: /home/ansible/testdir
+        state: directory
+        mode: 0770
+        group: wheel
+    - name: Copy files into directory
+      copy:
+        remote_src: yes
+        src: "{{ item }}"
+        dest: /home/ansible/testdir
+      with_items:
+        - "/home/ansible/file1.txt"
+        - "/home/ansible/file2.txt"
+        - "/home/ansible/file3.txt"
+        - "/home/ansible/file4.txt"
