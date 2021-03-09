@@ -1,0 +1,10 @@
+  newdir: 
+    - name: mir
+      userowner: ansible
+      newfile: file1.txt
+    - name: mir2
+      userowner: root 
+      newfile: file2.txt
+    - name: mir3 
+      userowner: root
+      newfile: file3.txt

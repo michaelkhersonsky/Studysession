@@ -1,0 +1,54 @@
+
+################ This is from labx-web-001.local
+dig labx-web-001.local
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.3 <<>> labx-web-001.local ;labx-web-001.local. IN A labx-web-001.local. 86400 IN A 192.168.1.204
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.3 <<>> 192.168.1.204 ;192.168.1.204. IN A
+date
+Fri Feb 12 16:53:59 EST 2021
+chronyc sources
+^* labx-ntp-001.local 4 9 377 112 +9420ns[ +10us] +/- 72ms
+timedatectl|grep NTP
+     NTP enabled: yes
+NTP synchronized: yes
+ls /mntdir && ls /var/www/html && df -h|grep labx
+labx-nfs-001.local:/apache      6.2G  1.6G  4.7G  25% /var/www/html
+labx-nfs-001.local:/allservers  6.2G  1.6G  4.7G  25% /mntdir
+cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+systemctl status firewalld
+● firewalld.service - firewalld - dynamic firewall daemon
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)
+   Active: active (running) since Fri 2021-02-12 13:05:22 EST; 3h 48min ago
+     Docs: man:firewalld(1)
+ Main PID: 712 (firewalld)
+   CGroup: /system.slice/firewalld.service
+           └─712 /usr/bin/python2 -Es /usr/sbin/firewalld --nofork --nopid
+
+Feb 12 13:05:09 labx-web-001.local systemd[1]: Starting firewalld - dynamic firewall daemon...
+Feb 12 13:05:22 labx-web-001.local systemd[1]: Started firewalld - dynamic firewall daemon.
+Feb 12 13:05:27 labx-web-001.local firewalld[712]: WARNING: AllowZoneDrifting is enabled. This is considered an insecure configuration option. It will be removed in a future release. Please consider disabling it now.
+getenforce
+Enforcing
+systemctl status httpd
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Fri 2021-02-12 13:06:02 EST; 3h 47min ago
+     Docs: man:httpd(8)
+           man:apachectl(8)
+ Main PID: 1024 (httpd)
+   Status: "Total requests: 30; Current requests/sec: 0; Current traffic:   0 B/sec"
+   CGroup: /system.slice/httpd.service
+           ├─1024 /usr/sbin/httpd -DFOREGROUND
+           ├─1331 /usr/sbin/httpd -DFOREGROUND
+           ├─1332 /usr/sbin/httpd -DFOREGROUND
+           ├─1333 /usr/sbin/httpd -DFOREGROUND
+           ├─1334 /usr/sbin/httpd -DFOREGROUND
+           ├─1335 /usr/sbin/httpd -DFOREGROUND
+           ├─1374 /usr/sbin/httpd -DFOREGROUND
+           └─1588 /usr/sbin/httpd -DFOREGROUND
+
+Feb 12 13:05:40 labx-web-001.local systemd[1]: Starting The Apache HTTP Server...
+Feb 12 13:06:02 labx-web-001.local systemd[1]: Started The Apache HTTP Server.
+exportfs -va
+#### End report for labx-web-001.local

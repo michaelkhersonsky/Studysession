@@ -1,0 +1,15 @@
+---
+- name: Create a directory
+  gather_facts: no
+  become: yes
+  hosts: localhost
+  tasks:
+    - name: pool variables
+      include_vars: 
+        file: var_file.yml
+    - name: Add one directory
+      file:
+        name: "{{ item.name }}"
+        path: /home/ansible/
+        state: directory
+      loop: "{{ newdir }}"

@@ -1,0 +1,60 @@
+---
+- name: Create a local customindex file
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Create a file
+      file:
+        path: /home/ansible/customindex
+        state: touch
+    - name: Add content to a file
+      copy:
+        content: "Hello I came from FallDevOps 2020"
+        dest: /home/ansible/customindex
+
+- name: Provisioning Apache webserver
+  hosts: servera
+  become: yes
+  vars:
+    - var_name:
+      - http 
+      - https
+    - var_port:
+      - "80/tcp"
+      - "443/tcp"
+  tasks:
+    - name: Installing packages
+      yum:
+        name: httpd
+        state: latest
+    - name: Start and enable service
+      systemd:
+        name: httpd
+        state: started
+        enabled: yes
+    # - name: Ensure the default Apache port is 8080
+    #   ansible.builtin.lineinfile:
+    #     path: /etc/httpd/conf/httpd.conf
+    #     regexp: '^Listen '
+    #     insertafter: '^#Listen '
+    #     line: Listen 8080
+    - name: Configure firewalld rules
+      firewalld:
+        service: '{{ item }}'
+          # - http
+          # - https
+        state: enabled
+        permanent: yes
+        immediate: yes
+      loop: '{{ var_name }}'
+    - name: Add ports into firewalld
+      firewalld:
+        port: '{{ item }}'
+          # - 80/tcp
+          # - 443/tcp
+        state: enabled
+        permanent: yes
+        immediate: yes
+      loop: '{{ var_port }}'
+   
