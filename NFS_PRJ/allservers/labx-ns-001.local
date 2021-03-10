@@ -1,0 +1,51 @@
+
+################ This is from labx-ns-001.local
+dig labx-ns-001.local
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.3 <<>> labx-ns-001.local ;labx-ns-001.local. IN A labx-ns-001.local. 86400 IN A 192.168.1.203
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.3 <<>> 192.168.1.203 ;192.168.1.203. IN A ;; SERVER: 192.168.1.203#53(192.168.1.203)
+date
+Fri Feb 12 16:53:58 EST 2021
+chronyc sources
+^* labx-ntp-001.local 4 8 377 40 -14us[ -15us] +/- 72ms
+timedatectl|grep NTP
+     NTP enabled: yes
+NTP synchronized: yes
+ls /mntdir && ls /var/www/html && df -h|grep labx
+labx-nfs-001.local:/allservers  6.2G  1.6G  4.7G  25% /mntdir
+cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+systemctl status firewalld
+● firewalld.service - firewalld - dynamic firewall daemon
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2021-02-11 21:58:35 EST; 18h ago
+     Docs: man:firewalld(1)
+ Main PID: 713 (firewalld)
+   CGroup: /system.slice/firewalld.service
+           └─713 /usr/bin/python2 -Es /usr/sbin/firewalld --nofork --nopid
+
+Feb 11 21:58:20 labx-ns-001.local systemd[1]: Starting firewalld - dynamic firewall daemon...
+Feb 11 21:58:35 labx-ns-001.local systemd[1]: Started firewalld - dynamic firewall daemon.
+Feb 11 21:58:44 labx-ns-001.local firewalld[713]: WARNING: AllowZoneDrifting is enabled. This is considered an insecure configuration option. It will be removed in a future release. Please consider disabling it now.
+getenforce
+Enforcing
+systemctl status httpd
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2021-02-11 21:59:24 EST; 18h ago
+     Docs: man:httpd(8)
+           man:apachectl(8)
+ Main PID: 1029 (httpd)
+   Status: "Total requests: 0; Current requests/sec: 0; Current traffic:   0 B/sec"
+   CGroup: /system.slice/httpd.service
+           ├─1029 /usr/sbin/httpd -DFOREGROUND
+           ├─1684 /usr/sbin/httpd -DFOREGROUND
+           ├─1685 /usr/sbin/httpd -DFOREGROUND
+           ├─1686 /usr/sbin/httpd -DFOREGROUND
+           ├─1687 /usr/sbin/httpd -DFOREGROUND
+           └─1688 /usr/sbin/httpd -DFOREGROUND
+
+Feb 11 21:58:55 labx-ns-001.local systemd[1]: Starting The Apache HTTP Server...
+Feb 11 21:59:24 labx-ns-001.local systemd[1]: Started The Apache HTTP Server.
+exportfs -va
+#### End report for labx-ns-001.local
