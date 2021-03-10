@@ -1,0 +1,29 @@
+- hosts: "{{ item.host }}"
+  tasks:
+    - name:  Make sure the package is installed 
+      yum:
+        name: chrony
+        state: latest
+    - name: Configure firewall
+      firewalld:
+        service: ntp
+        state: enabled
+        permanent: yes
+        immediate: yes
+      when: "{{ item.type }}" == 'server'
+    - name: Configure server
+      template:
+        src: chrony.conf.server.j2 #jinja2
+        dest: /etc/chrony.conf
+      when: "{{ item.type }}" == 'server'
+    - name: Configure client
+      template:
+        src: chrony.conf.client.j2 #jinja2
+        dest: /etc/chrony.conf
+      when: "{{ item.type }}" == 'client'
+
+    - name: Make sure service is started and enabled
+      systemd:
+        name: chronyd
+        state: started
+        enabled: yes

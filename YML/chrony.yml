@@ -1,0 +1,30 @@
+---
+- name: Chrony server / client provisioning
+  
+  become: yes
+  gather_facts: no
+  vars:
+    - myserver:
+        - host: "servera"
+          type: "server"
+        - host: "serverb"
+          type: "client"
+    - servertype: "{{ myserver.type }}"
+    - timesources:
+      - 0.centos.pool.ntp.org
+      - 1.centos.pool.ntp.org 
+      - 2.centos.pool.ntp.org
+      - 3.centos.pool.ntp.org
+    - allowsubnet: "allow 192.168.1.0/24"
+    - clientsource: "192.168.1.216"
+  hosts: all
+  tasks:
+    - name: include extra playbook
+  #start loop with myserver
+      include: include.yml
+      loop: "{{ myserver }}"
+      
+      
+
+
+

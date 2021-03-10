@@ -8,3 +8,14 @@
     - name: mir3 
       userowner: root
       newfile: file3.txt
+
+mother:
+  - name: doughter
+    filename: file1.txt
+    ownership: root
+  - name: son
+    filename: file2.txt
+    ownership: ansible
+  - name: alien
+    filename: file3.txt
+    ownership: student

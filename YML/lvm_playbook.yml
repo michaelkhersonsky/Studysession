@@ -1,0 +1,51 @@
+---
+- name: Lvm Playbook
+  hosts: servera
+  gather_facts: no
+  become: yes
+  vars:
+    vgname: falldevops
+    lvname: devopsfall
+    mntpath: "/home/ansible/mount"
+  tasks:
+    - name: Create primary partition with PARTED
+      parted:
+        device: /dev/sdc
+        number: 1
+        flags: [ lvm ] 
+        part_type: primary
+        part_end: 1GB
+        state: present
+      when
+    - name: Create mountpoint
+      file:
+        state: directory
+        path: "{{ mntpath }}"
+        owner: root
+        group: root
+        mode: 755
+    - name: Create volume group
+      lvg:
+        vg: "{{ vgname }}"
+        state: present
+        pvs: /dev/sdc1
+    - name: Create logical volume
+      lvol:
+        vg: "{{ vgname }}"
+        lv: "{{ lvname }}"
+        state: present
+        size: 500
+    - name: Make File System
+      filesystem:
+        dev: "/dev/mapper/{{ vgname }}-{{ lvname }}"
+        fstype: xfs
+    - name: Mount logical volume
+      mount:
+        path: /home/ansible/mount
+        state: mounted
+        src: "/dev/mapper/{{ vgname }}-{{ lvname }}"
+        fstype: xfs
+
+
+
+
