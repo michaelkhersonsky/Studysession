@@ -1,0 +1,22 @@
+---
+- name: Git installation header
+  gather_facts: no
+  become: yes
+  hosts: servera
+  vars:
+    remote_repo: "https://github.com/michaelkhersonsky/MBKH.git"
+  tasks:
+    - name: Git installation
+      yum:
+        name: git
+        state: latest
+      
+    - name: Clone remote repo
+      git:
+        clone: yes
+        repo: "{{ remote_repo }}"
+        dest: "/home/ansible/MBKH"
+      
+    
+    
+
