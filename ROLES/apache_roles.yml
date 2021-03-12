@@ -1,0 +1,8 @@
+## Example Playbook
+---
+- hosts: serverb
+  become: yes
+  vars_files:
+    - /home/ansible/MBKH/ROLES/geerlingguy.apache/vars/main.yml
+  roles:
+    - { role: /home/ansible/MBKH/ROLES/geerlingguy.apache }

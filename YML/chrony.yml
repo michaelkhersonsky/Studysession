@@ -6,7 +6,7 @@
   vars:
     - myserver:
         - host: "servera"
-          type: "server"
+          type: "server"333
         - host: "serverb"
           type: "client"
     - servertype: "{{ myserver.type }}"
