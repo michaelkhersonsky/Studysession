@@ -25,20 +25,20 @@
     permanent: yes
   when: apache_port is defined
 
-  # - name: Adding custom port to config file
-  # linenfile:
-  #   port: /etc/httpd/conf/httpd.conf
-  #   regexp: '^listen'
-  #   # insertafter: '^#Listen'
-  #   line: 'Listen {{ apache_port }}'
-  # when: apache_port is defined
-
-#OR use jinja template
-- name: Configure custom port with jinja
-  template:
-    src: httpd.j2 #jinja2
-    dest: /etc/httpd/conf/httpd.conf
+- name: Adding custom port to config file
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^listen'
+    # insertafter: '^#Listen'
+    line: 'Listen {{ apache_port }}'
   when: apache_port is defined
+
+#OR use jinja2 template
+# - name: Configure custom port with jinja
+#   template:
+#     src: httpd.j2 #jinja2
+#     dest: /etc/httpd/conf/httpd.conf
+#   when: apache_port is defined
 
 - name: Copy file in document root
   copy:

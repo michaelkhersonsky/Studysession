@@ -1,1 +1,0 @@
-mysql -u root -p -e "use powerdns; select * from records;"|grep "192.168.1"|grep -o "labx-.*.local"
