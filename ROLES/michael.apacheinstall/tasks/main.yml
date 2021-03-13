@@ -1,0 +1,48 @@
+---
+# tasks file for michael.apacheinstall
+- name: Install package
+  yum:
+    name: httpd
+    state: latest
+- name: Start and enable
+  service: 
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Add firewall rules
+  firewalld:
+    service: http
+    state: enabled
+    immediate: yes
+    permanent: yes
+
+- name: Adding custom port
+  firewalld:
+    port: "{{ apache_port }}/tcp"
+    state: enabled
+    immediate: yes
+    permanent: yes
+  when: apache_port is defined
+
+  # - name: Adding custom port to config file
+  # linenfile:
+  #   port: /etc/httpd/conf/httpd.conf
+  #   regexp: '^listen'
+  #   # insertafter: '^#Listen'
+  #   line: 'Listen {{ apache_port }}'
+  # when: apache_port is defined
+
+#OR use jinja template
+- name: Configure custom port with jinja
+  template:
+    src: httpd.j2 #jinja2
+    dest: /etc/httpd/conf/httpd.conf
+  when: apache_port is defined
+
+- name: Copy file in document root
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+  notify: restart_httpd
+    

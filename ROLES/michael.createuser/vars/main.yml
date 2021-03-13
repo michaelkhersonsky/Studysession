@@ -1,0 +1,12 @@
+---
+# vars file for michael.createuser
+userlist:
+  - username: roletester
+    home_dir: yes
+    keys: no
+    # primgrp: ''
+    secgrp: wheel
+    usershell: '/bin/bash'
+    state: absent 
+    update_password: always
+    password: $6$1yoJGhbYrDcClR/u$UespWLmMlGVaYE7q5INFGY.KHy1gPv2gP9662lL9q6nhb72lqxOBYlYqNfM.ApxDv9FJWeXcZLSyLiWA7E4uL0

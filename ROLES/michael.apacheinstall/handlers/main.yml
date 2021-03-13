@@ -1,0 +1,6 @@
+---
+# handlers file for michael.apacheinstall
+- name: restart_httpd
+  service:
+      name: httpd
+      state: restarted

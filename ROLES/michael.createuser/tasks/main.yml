@@ -1,0 +1,17 @@
+# tasks file for michael.createuser
+---
+#- name: Importing vars
+  #include_vars: "/home/ansible/MBKH/ROLES/michael.createuser/vars/main.yml"
+- name: Create userlist
+  user:
+    name: "{{ item.username }}"
+    create_home: "{{ item.home_dir }}"
+    # generate_ssh_key: "{{ item.keys }}"
+    
+    group: "{{ item.primgrp | default (omit) }}"
+    groups: "{{ item.secgrp }}"
+    shell: "{{ item.usershell | default ('/bin/bash') }}"
+    state: "{{ item.state }}"
+    update_password: "{{ item.update_password }}"
+    password: "{{ item.password }}"
+  loop: "{{ userlist }}"
